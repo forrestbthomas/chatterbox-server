@@ -4,16 +4,33 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+// var qs = require('querystring');;
+var storage = [];
 exports.handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
-  request.url = "http://127.0.0.1:3000/1/classes/chatterbox/";
+  // request.url = "http://127.0.0.1:3000/1/classes/chatterbox/";
   request.headers.host = "http://127.0.0.1:3000/1/classes/chatterbox/";
-  // console.dir(request);
   console.log("Serving request type " + request.method + " for url " + request.url);
+  if (request.method === 'POST') {
+    var body = '';
+    request.on('data', function (data) {
+      body += data;
+    });
+      request.on('end', function () {
+      var post = JSON.parse(body);
+      storage.push(post);
+    });
+  }
+  else if (request.method === "GET") {
+    var obj = {};
+    obj.results = storage;
+  }
+  // console.log(qs.stringify(storage[0]))
+
 
   var statusCode = 200;
 
@@ -22,6 +39,7 @@ exports.handleRequest = function(request, response) {
   var headers = defaultCorsHeaders;
 
   headers['Content-Type'] = "text/plain";
+  response.writeHead(statusCode, headers);
 
   /* .writeHead() tells our server what HTTP status code to send back */
   /* Make sure to always call response.end() - Node will not send
@@ -29,7 +47,8 @@ exports.handleRequest = function(request, response) {
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
   // response.write(chunk);
-  response.end();
+
+  response.end(JSON.stringify(obj));
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).

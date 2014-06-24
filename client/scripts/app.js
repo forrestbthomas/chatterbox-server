@@ -67,12 +67,12 @@ $(document).ready(function() {
         success: function (data) {
           console.log(data)
           console.log('chatterbox: Message received');
+          data = JSON.parse(data);
           app.render(data);
           app.highlightFriends();
         },
         error: function (data) {
           console.error('chatterbox: Failed to get message');
-          console.log(this);
         }
       });
     },
