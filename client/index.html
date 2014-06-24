@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/underscore/underscore.js">
+    </script>
+    <script src="bower_components/backbone/backbone.js"></script>
+    <!-- your scripts -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <!-- <script src="scripts/Backbone/appBackbone.js"></script> -->
+  </head>
+  <body>
+    <div id="main">
+      <h1>chatterbox</h1>
+      <div class="messageBox">
+      <input type="text" id="messageInput" placeholder="Type your message here, yo!" size="70"></input>
+      <button id="sendButton">Submit Messages</button>
+      <div>
+        <input type="text" id="roomInput" placeholder="Pick your room" size="15"></input>
+        <button id="roomButton">Switch Rooms</button>
+      </div>
+
+      <ul class="messages">
+
+      </ul>
+      </div>
+    </div>
+    <style>
+    .post {
+      font-size: 12px;
+    }
+    .post:hover{
+      color: steelblue;
+      cursor: pointer;
+      cursor: hand;
+    }
+    </style>
+  </body>
+</html>
