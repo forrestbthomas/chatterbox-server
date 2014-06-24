@@ -6,16 +6,21 @@
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 // var qs = require('querystring');;
 var storage = [];
+var url = {};
 exports.handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
-
+  var statusCode = 200;
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
   // request.url = "http://127.0.0.1:3000/1/classes/chatterbox/";
-  request.headers.host = "http://127.0.0.1:3000/1/classes/chatterbox/";
+  // request.headers.host = "http://127.0.0.1:3000/1/classes/chatterbox/";
   console.log("Serving request type " + request.method + " for url " + request.url);
   if (request.method === 'POST') {
+    if (!(url[request.url] in url)) {
+      url[request.url] = true;
+      statusCode = 201;
+    }
     var body = '';
     request.on('data', function (data) {
       body += data;
@@ -23,16 +28,20 @@ exports.handleRequest = function(request, response) {
       request.on('end', function () {
       var post = JSON.parse(body);
       storage.push(post);
+      statusCode;
     });
   }
   else if (request.method === "GET") {
     var obj = {};
     obj.results = storage;
+    if (request.url.indexOf('classes') === -1) {
+      statusCode = 404;
+    } else {
+      statusCode;
+    }
   }
   // console.log(qs.stringify(storage[0]))
 
-
-  var statusCode = 200;
 
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
